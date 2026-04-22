@@ -1,5 +1,6 @@
 import type { Character } from "../model";
-import characters from "./data/characters.json";
+import { apiClient, getPaginatedItems } from "./api-client";
+
 
 // enum CharacterFieldEnum { // erasable syntax only
 //   id = 'id',
@@ -10,16 +11,18 @@ import characters from "./data/characters.json";
 //   gender = 'gender',
 // }
 
-
-
 export async function getCharacters(): Promise<Character[]> {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  return new Promise((resolve) => resolve(characters));
+
+  const axiosResponse = await getPaginatedItems<Character>('character', 1, null);
+
+  return axiosResponse.results;
 }
 
 export async function getCharacter(id: number): Promise<Character | undefined> {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  return new Promise((resolve) =>
-    resolve(characters.find((character) => character.id === id)),
-  );
+  const axiosResponse = await apiClient<Character>({
+    method: "get",
+    url: `/character/${id}`,
+  });
+
+  return axiosResponse.data;
 }
