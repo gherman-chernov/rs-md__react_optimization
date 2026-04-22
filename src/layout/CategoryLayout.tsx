@@ -1,17 +1,21 @@
 import { NavLink, Outlet, useNavigate } from "react-router";
 
 import "./category-layout.css";
-import { useCallback } from "react";
+import { Suspense, useCallback } from "react";
 import { useAuth } from "../hook/useAuth";
+import ErrorBoundary from "../component/ErrorBoundary";
 
 export function CategoryLayout() {
   const navigate = useNavigate();
   const { user, setUser } = useAuth();
-  const logoutHander = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    setUser(null);
-    navigate('/')
-  }, [setUser, navigate]);
+  const logoutHander = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault();
+      setUser(null);
+      navigate("/");
+    },
+    [setUser, navigate],
+  );
 
   return (
     <>
@@ -40,7 +44,11 @@ export function CategoryLayout() {
           )}
         </ul>
       </nav>
-      <Outlet />
+      <ErrorBoundary>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Outlet />
+        </Suspense>
+      </ErrorBoundary>
     </>
   );
 }

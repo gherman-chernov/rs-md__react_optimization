@@ -2,21 +2,11 @@ import { createBrowserRouter, Navigate } from "react-router";
 import App from "./App";
 import { NotFound } from "./pages/NotFound";
 import { CategoryLayout } from "./layout/CategoryLayout";
-import { CharacterList } from "./pages/character/CharacterList";
-import { EpisodeList } from "./pages/episode/EpisodeList";
-import { LocationList } from "./pages/location/LocationList";
-import { Character } from "./pages/character/Character";
-import { Episode } from "./pages/episode/Episode";
-import { Location } from "./pages/location/Location";
-import { characterListLoader } from "./pages/character/CharacterList.loader";
-import { characterLoader } from "./pages/character/Character.loader";
-import { episodeListLoader } from "./pages/episode/EpisodeList.loader";
-import { episodeLoader } from "./pages/episode/Episode.loader";
-import { locationListLoader } from "./pages/location/LocationList.loader";
-import { locationLoader } from "./pages/location/Location.loader";
 import { Login } from "./pages/Login";
 import { PrivateRoute } from "./component/PrivateRoute";
 
+
+///React.lazy or Router.lazy ???
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -28,34 +18,69 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            //path: "characters",
-            element: <CharacterList />,
-            loader: characterListLoader,
+            lazy: async () => {
+              const [Component, loader] = await Promise.all([
+                import('./pages/character/CharacterList').then(module => module.CharacterList),
+                import('./pages/character/CharacterList.loader').then(module => module.characterListLoader),
+              ])
+
+              return {Component, loader}
+            },
           },
           {
             path: "characters/:id",
-            element: <Character />,
-            loader: characterLoader
+            lazy: async () => {
+              const [Component, loader] = await Promise.all([
+                import('./pages/character/Character').then(module => module.Character),
+                import('./pages/character/Character.loader').then(module => module.characterLoader),
+              ])
+
+              return {Component, loader}
+            },
           },
           {
             path: "episodes",
-            element: <EpisodeList />,
-            loader: episodeListLoader,
+            lazy: async () => {
+              const [Component, loader] = await Promise.all([
+                import('./pages/episode/EpisodeList').then(module => module.EpisodeList),
+                import('./pages/episode/EpisodeList.loader').then(module => module.episodeListLoader),
+              ])
+
+              return {Component, loader}
+            },
           },
           {
             path: "episodes/:id",
-            element: <Episode />,
-            loader: episodeLoader,
+            lazy: async () => {
+              const [Component, loader] = await Promise.all([
+                import('./pages/episode/Episode').then(module => module.Episode),
+                import('./pages/episode/Episode.loader').then(module => module.episodeLoader),
+              ])
+
+              return {Component, loader}
+            },
           },
           {
             path: "locations",
-            element: <LocationList />,
-            loader: locationListLoader,
+            lazy: async () => {
+              const [Component, loader] = await Promise.all([
+                import('./pages/location/LocationList').then(module => module.LocationList),
+                import('./pages/location/LocationList.loader').then(module => module.locationListLoader),
+              ])
+
+              return {Component, loader}
+            },
           },
           {
             path: "locations/:id",
-            element: <Location />,
-            loader: locationLoader,
+            lazy: async () => {
+              const [Component, loader] = await Promise.all([
+                import('./pages/location/Location').then(module => module.Location),
+                import('./pages/location/Location.loader').then(module => module.locationLoader),
+              ])
+
+              return {Component, loader}
+            },
           },
         ],
       }, {
