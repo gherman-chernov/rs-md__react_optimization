@@ -1,14 +1,19 @@
 import type { Episode } from '../model';
-import episodes from './data/episode.json';
+import { getPaginatedItems, apiClient } from './api-client';
 
-export async function getEpisodes() {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  return new Promise((resolve) => resolve(episodes))
+
+export async function getEpisodes(): Promise<Episode[]> {
+
+  const axiosResponse = await getPaginatedItems<Episode>('episode', 1, null);
+
+  return axiosResponse.results;
 }
 
 export async function getEpisode(id: number): Promise<Episode | undefined> {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  return new Promise((resolve) =>
-    resolve(episodes.find((episode) => episode.id === id)),
-  );
+  const axiosResponse = await apiClient<Episode>({
+    method: "get",
+    url: `/episode/${id}`,
+  });
+
+  return axiosResponse.data;
 }
