@@ -1,15 +1,5 @@
 import type { Character } from "../model";
-import { apiClient, getPaginatedItems } from "./api-client";
-
-
-// enum CharacterFieldEnum { // erasable syntax only
-//   id = 'id',
-//   name = 'name',
-//   status = 'status',
-//   species = 'species',
-//   type = 'type',
-//   gender = 'gender',
-// }
+import { getPaginatedItems, apiClient } from "./api-client";
 
 export async function getCharacters(): Promise<Character[]> {
 

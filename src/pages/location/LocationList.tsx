@@ -1,8 +1,23 @@
 import { useLoaderData, useNavigate } from "react-router";
-import { ObjectList } from "../../component/object-list/ObjectList";
+import { ObjectList } from "../../component/object-list";
 import { locationDisplayableAttributes, type Location } from "../../model";
 import { useState, useCallback } from "react";
 import { usePaginatedItems } from "../../hook/usePaginatedItems";
+import type { TableProps } from "antd";
+
+const locationColumns: TableProps<Location>["columns"] = [{
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name'
+  }, {
+    title: 'Type',
+    dataIndex: 'type',
+    key: 'type'
+  }, {
+    title: 'Dimension',
+    dataIndex: 'dimension',
+    key: 'dimension'
+  }]
 
 export function LocationList()  {
   const data = useLoaderData<Location[]>();
@@ -23,6 +38,7 @@ export function LocationList()  {
   return (
     <>
       <ObjectList
+        columns={locationColumns}
         data={items}
         loading={loading && pageNumber > 1}
         error={error}

@@ -1,16 +1,14 @@
 import { Outlet } from "react-router";
 import { AuthProvider } from "./context/AuthProvider";
+import { Layout } from "antd";
 
 function App() {
   return (
-    <>
-      <header>
-        <h2>Welcome to 'Rick & Morty' fan page!</h2>
-      </header>
+    <Layout>
       <AuthProvider>
         <Outlet />
       </AuthProvider>
-    </>
+    </Layout>
   );
 }
 
